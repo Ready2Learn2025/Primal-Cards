@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Primal Cards</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        font-family: 'Press Start 2P', cursive;
+        background: #f08030;
+        color: #fff;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        padding: 20px;
+      }
+      .pokedex {
+        background: #b22222;
+        border: 4px solid #ffcc00;
+        border-radius: 20px 20px 0 0;
+        padding: 20px;
+        max-width: 400px;
+        width: 100%;
+        box-shadow: inset -5px -5px 15px rgba(0, 0, 0, 0.4);
+      }
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: #ffcc00;
+        margin-bottom: 20px;
+      }
+      .header h1 {
+        font-size: 16px;
+      }
+      .countdown-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .countdown-label {
+        font-size: 10px;
+        margin-bottom: 4px;
+      }
+      .countdown {
+        font-family: monospace;
+        background: black;
+        color: limegreen;
+        padding: 5px;
+        border: 2px inset #888;
+        font-size: 12px;
+        width: 80px;
+        text-align: center;
+      }
+      .nav {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+      }
+      .nav a {
+        text-decoration: none;
+        background: #ffe5b4;
+        color: #b22222;
+        padding: 15px;
+        border-radius: 10px;
+        text-align: center;
+        font-weight: bold;
+        transition: background 0.3s;
+        border: 2px solid #b22222;
+      }
+      .nav a:hover,
+      .nav a.active {
+        background: #ffd700;
+      }
+      .controller {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #b22222;
+        border: 4px solid #ffcc00;
+        border-radius: 0 0 20px 20px;
+        padding: 20px;
+        max-width: 400px;
+        width: 100%;
+        box-shadow: inset -5px -5px 15px rgba(0, 0, 0, 0.4);
+      }
+      .dpad-select {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        width: 100%;
+        gap: 20px;
+      }
+      .dpad {
+        display: grid;
+        grid-template-areas:
+          ". up ."
+          "left center right"
+          ". down .";
+        gap: 10px;
+      }
+      .dpad button,
+      .select-start button,
+      .extra-buttons button {
+        font-family: 'Press Start 2P', cursive;
+        background: #ffcc00;
+        color: #b22222;
+        border: 2px solid #b22222;
+        border-radius: 10px;
+        cursor: pointer;
+      }
+      .dpad button {
+        width: 50px;
+        height: 50px;
+      }
+      .select-start,
+      .extra-buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .select-start button {
+        padding: 10px 20px;
+        background: #ffe5b4;
+      }
+      .extra-buttons button {
+        padding: 10px 15px;
+        background: #ffcc00;
+      }
+      .email-popup {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: #ffe5b4;
+        padding: 20px;
+        border: 4px solid #b22222;
+        border-radius: 20px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.5);
+        z-index: 999;
+      }
+      .email-popup input {
+        font-family: 'Press Start 2P', cursive;
+        padding: 10px;
+        border: 2px solid #b22222;
+        border-radius: 10px;
+        width: 100%;
+        margin-top: 10px;
+      }
+      .email-popup button {
+        margin-top: 10px;
+        padding: 10px;
+        font-family: 'Press Start 2P', cursive;
+        background: #ffcc00;
+        border: 2px solid #b22222;
+        border-radius: 10px;
+        cursor: pointer;
+      }
+      .dpad .up    { grid-area: up;    }
+      .dpad .down  { grid-area: down;  }
+      .dpad .left  { grid-area: left;  }
+      .dpad .right { grid-area: right; }
+      .dpad .center { grid-area: center; background: transparent; border: none; }
+      @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+    </style>
+  </head>
+  <body>
+    <div class="pokedex">
+      <div class="header">
+        <div class="countdown-container">
+          <div class="countdown-label">Name 1</div>
+          <div class="countdown" id="timer1">Drop Name Here</div>
+        </div>
+        <h1>Primal Cards</h1>
+        <div class="countdown-container">
+          <div class="countdown-label">Name 2</div>
+          <div class="countdown" id="timer2">Drop Name Here</div>
+        </div>
+      </div>
+      <div class="nav" id="navLinks">
+        <a href="#" class="active">Box Sales</a>
+        <a href="#">Coming Soon</a>
+        <a href="#">Card Sales</a>
+        <a href="#">Community</a>
+      </div>
+    </div>
+    <div class="controller">
+      <div class="dpad-select">
+        <div class="dpad">
+          <button class="up" onclick="switchTab(-1)">&#9650;</button>
+          <button class="left" onclick="switchTab(-1)">&#9664;</button>
+          <button class="center"></button>
+          <button class="right" onclick="switchTab(1)">&#9654;</button>
+          <button class="down" onclick="switchTab(1)">&#9660;</button>
+        </div>
+        <div class="select-start">
+          <button onclick="alert('SELECT pressed')">SELECT</button>
+          <button onclick="document.getElementById('emailPopup').style.display='block'">START</button>
+        </div>
+
+      </div>
+    </div>
+    <div class="email-popup" id="emailPopup">
+      <label for="email">Enter your email:</label>
+      <input type="email" id="email" name="email" placeholder="you@example.com">
+      <button onclick="submitEmail()">Submit</button>
+    </div>
+    <script>
+      let currentIndex = 0;
+      const links = document.querySelectorAll('#navLinks a');
+
+      function updateActiveTab() {
+        links.forEach((link, i) => {
+          link.classList.toggle('active', i === currentIndex);
+        });
+      }
+
+      function switchTab(direction) {
+        currentIndex = (currentIndex + direction + links.length) % links.length;
+        updateActiveTab();
+      }
+
+      function startCountdown(id, days) {
+        const countdownEl = document.getElementById(id);
+        const target = new Date(Date.now() + days * 24 * 60 * 60 * 1000);
+        function update() {
+          const now = new Date();
+          const diff = target - now;
+          const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+          const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+          const m = Math.floor((diff / (1000 * 60)) % 60);
+          const s = Math.floor((diff / 1000) % 60);
+          countdownEl.textContent = `${d}D ${h}H ${m}M ${s}S`;
+        }
+        update();
+        setInterval(update, 1000);
+      }
+
+      function submitEmail() {
+        const email = document.getElementById('email').value;
+        if (email) {
+          alert(`Thank you! Email collected: ${email}`);
+          document.getElementById('emailPopup').style.display = 'none';
+        } else {
+          alert('Please enter a valid email.');
+        }
+      }
+
+      startCountdown('timer1', 7);
+      startCountdown('timer2', 7);
+    </script>
+  </body>
+</html>
